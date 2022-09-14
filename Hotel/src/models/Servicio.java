@@ -12,6 +12,14 @@ public class Servicio {
     public Servicio() {
     }
 
+    public Servicio(String Concepto, Habitacion habitacion, float importe) {
+        this.Concepto = Concepto;
+        this.habitacion = habitacion;
+        this.importe = importe;
+    }
+    
+    
+
     public Servicio(int idServicio, String Concepto, Habitacion habitacion, float importe) {
         this.idServicio = idServicio;
         this.Concepto = Concepto;
@@ -50,6 +58,13 @@ public class Servicio {
     public void setImporte(float importe) {
         this.importe = importe;
     }
+
+    @Override
+    public String toString() {
+        return "Servicio{" + "idServicio=" + idServicio + ", Concepto=" + Concepto + ", habitacion=" + habitacion.getDenominacion() + ", importe=" + importe + '}';
+    }
+    
+    
     
         public Object[] toArray(){//ME CONVIERTE EL OBJETO EN UNA FILA
         return new Object[]{idServicio, Concepto, habitacion, importe };

@@ -2,15 +2,21 @@
 package view;
 
 import controller.ServicioController;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import models.Habitacion;
+import models.Servicio;
 
 
 public class frmAlta extends javax.swing.JFrame {
 
-
+    private ServicioController controller;
+    
     public frmAlta(ServicioController controller) {
         initComponents();
         setLocationRelativeTo(null);
+        this.controller = controller;
+        cargarCombo();
     }
 
 
@@ -19,7 +25,7 @@ public class frmAlta extends javax.swing.JFrame {
     private void initComponents() {
 
         txtConcepto = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
+        txtImporte = new javax.swing.JTextField();
         btnAceptar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnSalir2 = new javax.swing.JButton();
@@ -37,7 +43,7 @@ public class frmAlta extends javax.swing.JFrame {
 
         txtConcepto.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
 
-        txtNombre.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        txtImporte.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
 
         btnAceptar.setBackground(java.awt.Color.green);
         btnAceptar.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
@@ -51,7 +57,7 @@ public class frmAlta extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        jLabel1.setText("Paciente:");
+        jLabel1.setText("Importe:");
 
         btnSalir2.setBackground(new java.awt.Color(255, 51, 51));
         btnSalir2.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
@@ -116,7 +122,7 @@ public class frmAlta extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtConcepto)
-                            .addComponent(txtNombre)
+                            .addComponent(txtImporte)
                             .addComponent(cboHabitacion, 0, 197, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -151,7 +157,7 @@ public class frmAlta extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
@@ -165,42 +171,23 @@ public class frmAlta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        //int id = 0;
+
         try {
-            //            Paciente p = (Paciente) cboPaciente.getSelectedItem();
-            //            Empleado e = (Empleado) cboRecepcionista.getSelectedItem();
-            //            String nombre = txtNombre.getText();
-            //            int duracion = Integer.parseInt(txtDuracion.getText());
-            //            Visita nueva = new Visita(0, p, e, nombre, duracion);
-            //            controlador.agregarVisita(nueva);
-            //            loadInfo();
-            //            limpiarCampos();
+          
+            String concepto = txtConcepto.getText();
+            Habitacion h = (Habitacion) cboHabitacion.getSelectedItem();
+            float importe = Float.parseFloat(txtImporte.getText());
+            Servicio nuevo = new Servicio(concepto, h, importe);
+            controller.altaServicio(nuevo);
+            
+//            loadInfo();
+//            limpiarCampos();
+            JOptionPane.showMessageDialog(this,"Servicio Registrado!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.toString(), "Catch", JOptionPane.ERROR_MESSAGE);
         }
 
-        //        String apellido = txtApellido.getText();
-        //        String calle = txtApellido.getText();
-        //        int cod_barrio = cboBarrio.getSelectedIndex();
-        //
-        //        Persona p = new Persona(0, nombre, apellido, calle, cod_barrio);
-
-        //1° VALIDAR QUE LOS CAMPOS ESTEN COMPLETOS
-        //        try {
-            //            if (!validarCampos()) {
-                //                //JOptionPane.showMessageDialog(this, "Formulario Incompleto!", "Validaciones", JOptionPane.ERROR_MESSAGE);
-                //                return;//PARA CORTAR EL CICLO
-                //            }
-            //
-            //            //controlador.agregarPersona(p);
-            //            JOptionPane.showMessageDialog(this, "Cliente Registrado!", "Info", JOptionPane.INFORMATION_MESSAGE);
-            //            this.dispose();
-            //
-            //        } catch (Exception e) {
-            //
-            //
-            //        }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
@@ -211,7 +198,14 @@ public class frmAlta extends javax.swing.JFrame {
         limpiarCampos();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-
+     private void cargarCombo() {
+        ArrayList<Habitacion> lista = controller.obtenerHabitaciones();
+        
+        for (Habitacion h : lista) {
+            cboHabitacion.addItem(h.getDenominacion());
+        }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
@@ -224,7 +218,7 @@ public class frmAlta extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tServicios;
     private javax.swing.JTextField txtConcepto;
-    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtImporte;
     // End of variables declaration//GEN-END:variables
 
     private void limpiarCampos() {

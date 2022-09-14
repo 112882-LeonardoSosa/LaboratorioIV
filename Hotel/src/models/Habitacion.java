@@ -29,6 +29,11 @@ public class Habitacion {
     public void setDenominacion(String Denominacion) {
         this.Denominacion = Denominacion;
     }
+
+    @Override
+    public String toString() {
+        return this.Denominacion;
+    }
     
     
 }
