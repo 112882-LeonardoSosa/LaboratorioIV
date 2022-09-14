@@ -51,5 +51,7 @@ public class Servicio {
         this.importe = importe;
     }
     
-    
+        public Object[] toArray(){//ME CONVIERTE EL OBJETO EN UNA FILA
+        return new Object[]{idServicio, Concepto, habitacion, importe };
+    }
 }

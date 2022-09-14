@@ -1,0 +1,19 @@
+PASOS LABO IV
+
+1° AGREGAR JAR SQL 17
+2° PROBAR CONEXION EN EL MAIN(CAMBIAR CADENA)
+3° SETEAR EL SETLOCATIONRELATIVE(NULL) EN TODOS LOS FORMS
+4° SETEAR EL COMBO BOX QUE RECIBA <Object>
+(Propertis -> Code -> Type Parameters)
+5° Generar el metodo ToArray para mostrar en la jTable.
+6° En los formularios hijos (Alta Reporte)
+setear el defaultCloseOperation = Dispose.
+setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+7° imports controller
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;

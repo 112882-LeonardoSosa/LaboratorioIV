@@ -1,12 +1,15 @@
 
 package view;
 
+import controller.ServicioController;
+
 public class frmReportes extends javax.swing.JFrame {
 
 
-    public frmReportes() {
+    public frmReportes(ServicioController controller) {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
 
