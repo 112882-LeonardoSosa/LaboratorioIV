@@ -2,8 +2,11 @@
 package view;
 
 import controller.ServicioController;
+import dto.dtoServicio;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import models.Habitacion;
 import models.Servicio;
 
@@ -17,6 +20,8 @@ public class frmAlta extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.controller = controller;
         cargarCombo();
+        loadServicios();
+        cboHabitacion.setSelectedIndex(-1);
     }
 
 
@@ -32,7 +37,7 @@ public class frmAlta extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tServicios = new javax.swing.JTable();
+        tableServicios = new javax.swing.JTable();
         cboHabitacion = new javax.swing.JComboBox<>();
         btnCancelar = new javax.swing.JButton();
 
@@ -42,8 +47,18 @@ public class frmAlta extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(826, 398));
 
         txtConcepto.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        txtConcepto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtConceptoKeyTyped(evt);
+            }
+        });
 
         txtImporte.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        txtImporte.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtImporteKeyTyped(evt);
+            }
+        });
 
         btnAceptar.setBackground(java.awt.Color.green);
         btnAceptar.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
@@ -76,18 +91,18 @@ public class frmAlta extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         jLabel4.setText("Concepto:");
 
-        tServicios.setModel(new javax.swing.table.DefaultTableModel(
+        tableServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(tServicios);
+        jScrollPane1.setViewportView(tableServicios);
 
         cboHabitacion.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
 
@@ -173,36 +188,69 @@ public class frmAlta extends javax.swing.JFrame {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
 
         try {
-          
-            String concepto = txtConcepto.getText();
-            Habitacion h = (Habitacion) cboHabitacion.getSelectedItem();
-            float importe = Float.parseFloat(txtImporte.getText());
-            Servicio nuevo = new Servicio(concepto, h, importe);
-            controller.altaServicio(nuevo);
-            
-//            loadInfo();
-//            limpiarCampos();
-            JOptionPane.showMessageDialog(this,"Servicio Registrado!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (validarCampos()) {
+
+                String concepto = txtConcepto.getText();
+                Habitacion h = (Habitacion) cboHabitacion.getSelectedItem();
+                float importe = Float.parseFloat(txtImporte.getText());
+                Servicio nuevo = new Servicio(concepto, h, importe);
+                controller.altaServicio(nuevo);
+
+                JOptionPane.showMessageDialog(this, "Servicio Registrado!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                loadServicios();
+                limpiarCampos();
+            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.toString(), "Catch", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnAceptarActionPerformed
-
+    
+     private void loadServicios() {
+        DefaultTableModel model = new DefaultTableModel();
+        ArrayList<dtoServicio> todos = controller.obtenerServicios();
+        model.setColumnIdentifiers(new String[]{"Concepto","Habitación","Importe"});
+        for (dtoServicio s: todos) {
+            model.addRow(s.toArray());
+        }
+        
+        tableServicios.setModel(model);
+        
+    }
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
-        // TODO add your handling code here:
+        this.hide();
     }//GEN-LAST:event_btnSalir2ActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         limpiarCampos();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void txtImporteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtImporteKeyTyped
+        //VALIDACION SOLO NUMEROS Y PUNTO DECIMAL
+        char c = evt.getKeyChar();
+
+        if (((c < '0') || (c > '9'))
+                && (c != KeyEvent.VK_BACK_SPACE)
+                && (c != '.' || txtImporte.getText().contains("."))) {
+           evt.consume();
+        }
+    }//GEN-LAST:event_txtImporteKeyTyped
+
+    private void txtConceptoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConceptoKeyTyped
+        //VALIDACION SOLO LETRAS
+        char c = evt.getKeyChar();
+
+        if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtConceptoKeyTyped
+
      private void cargarCombo() {
         ArrayList<Habitacion> lista = controller.obtenerHabitaciones();
         
         for (Habitacion h : lista) {
-            cboHabitacion.addItem(h.getDenominacion());
+            cboHabitacion.addItem(h);
         }
         
     }
@@ -216,12 +264,36 @@ public class frmAlta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tServicios;
+    private javax.swing.JTable tableServicios;
     private javax.swing.JTextField txtConcepto;
     private javax.swing.JTextField txtImporte;
     // End of variables declaration//GEN-END:variables
 
     private void limpiarCampos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        txtConcepto.setText("");
+        txtImporte.setText("");
+        cboHabitacion.setSelectedIndex(-1);
+    }
+
+    private boolean validarCampos() {
+        boolean bandera = true;
+
+        if (txtConcepto.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un concepto...", "Validación", JOptionPane.INFORMATION_MESSAGE);
+            bandera = false;
+            return bandera;
+        }
+        if (cboHabitacion.getSelectedIndex() <= -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una habitación...", "Validación", JOptionPane.INFORMATION_MESSAGE);
+            bandera = false;
+            return bandera;
+        }
+        if (txtImporte.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un importe...", "Validación", JOptionPane.INFORMATION_MESSAGE);
+            bandera = false;
+            return bandera;
+        }
+
+        return bandera;
     }
 }

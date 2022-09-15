@@ -63,10 +63,8 @@ public class Servicio {
     public String toString() {
         return "Servicio{" + "idServicio=" + idServicio + ", Concepto=" + Concepto + ", habitacion=" + habitacion.getDenominacion() + ", importe=" + importe + '}';
     }
-    
-    
-    
-        public Object[] toArray(){//ME CONVIERTE EL OBJETO EN UNA FILA
-        return new Object[]{idServicio, Concepto, habitacion, importe };
+     
+    public Object[] toArray() {//ME CONVIERTE EL OBJETO EN UNA FILA
+        return new Object[]{idServicio, Concepto, habitacion, importe};
     }
 }

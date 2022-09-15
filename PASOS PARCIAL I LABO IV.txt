@@ -3,6 +3,8 @@ PASOS LABO IV
 1° AGREGAR JAR SQL 17
 2° PROBAR CONEXION EN EL MAIN(CAMBIAR CADENA)
 3° SETEAR EL SETLOCATIONRELATIVE(NULL) EN TODOS LOS FORMS
+4° Agregar el metodo ToString que devuelva solo el
+nombre del comboBox.
 4° SETEAR EL COMBO BOX QUE RECIBA <Object>
 (Propertis -> Code -> Type Parameters)
 5° Generar el metodo ToArray para mostrar en la jTable.
@@ -17,3 +19,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+        char c = evt.getKeyChar();
+
+        if (((c < '0') || (c > '9'))
+                && (c != KeyEvent.VK_BACK_SPACE)
+                && (c != '.' || txtConcepto.getText().contains("."))) {
+           evt.consume();
+        }
