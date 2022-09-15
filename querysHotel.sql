@@ -18,6 +18,8 @@ select * from Servicios
 
 --Concepto e importe de todos aquellos servicios contratados 
 --por una habitación en particular seleccionada por el usuario
-select * from Servicios
-
+select Concepto, Importe, h.Denominacion
+from Servicios s join Habitaciones h 
+on s.IdHabitacion = h.IdHabitacion
+where h.Denominacion like '%%'
 
