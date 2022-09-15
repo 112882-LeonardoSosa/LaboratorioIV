@@ -207,7 +207,7 @@ public class frmAlta extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAceptarActionPerformed
     
-     private void loadServicios() {
+    private void loadServicios() {
         DefaultTableModel model = new DefaultTableModel();
         ArrayList<dtoServicio> todos = controller.obtenerServicios();
         model.setColumnIdentifiers(new String[]{"Concepto","Habitación","Importe"});

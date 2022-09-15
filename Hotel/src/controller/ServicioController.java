@@ -1,6 +1,7 @@
 package controller;
 
 import dto.dtoReporte2;
+import dto.dtoReporte3;
 import dto.dtoServicio;
 import models.Servicio;
 import java.sql.DriverManager;
@@ -145,4 +146,34 @@ public class ServicioController {
 
         return listaServicios;
     }
+
+    public ArrayList<dtoReporte3> Reporte3(String habitacion) {
+        ArrayList<dtoReporte3> listaServicios = new ArrayList<>();
+
+        try {
+            Connection conexion = DriverManager.getConnection(cadena);
+            Statement st = conexion.createStatement();
+            ResultSet rs = st.executeQuery("select Concepto, Importe, h.Denominacion\n"
+                    + "from Servicios s join Habitaciones h \n"
+                    + "on s.IdHabitacion = h.IdHabitacion\n"
+                    + "where h.Denominacion like '%"+habitacion+"%'");
+            // Si el select devuelve una única fila, en lugar de while, se usa un if
+            while (rs.next()) {
+                String concepto = rs.getString("Concepto");
+                float importe = rs.getFloat("importe");
+                String denominacion = rs.getString("Denominacion");
+                dtoReporte3 s = new dtoReporte3(concepto, importe, denominacion);
+                listaServicios.add(s);
+            }
+
+            rs.close();
+            st.close();
+            conexion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ServicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listaServicios;
+    }
+
 }
