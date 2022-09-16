@@ -17,7 +17,7 @@ import models.Habitacion;
 
 public class ServicioController {
 
-    String cadena = "jdbc:sqlserver://localhost:1433; database=HOTEL; user=sa; password=123leo; loginTimeout=30; TrustServerCertificate=true";
+    String cadena = "jdbc:sqlserver://localhost:1433; database=Hotel; user=sa; password=3103; loginTimeout=30; TrustServerCertificate=true";
 
     public void altaServicio(Servicio obj) {
 
