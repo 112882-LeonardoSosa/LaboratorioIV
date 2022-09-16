@@ -1,0 +1,21 @@
+que pasa si me conecto a un servidor pero está apagado?
+El servidor está apagado, la conexión no se puede establecer.
+El metodo getConection va a arrojar una excepción, por eso debemos ejecutarlo dentro de un try.
+Para capturar la excepción lo hacemos desde el bloque catch.
+
+que es un dto y para que sirve?
+Los DTO(Data transfer object) son un tipo de objetos que sirven únicamente para transportar datos. 
+EL DTO contiene las propiedades del objeto. 
+Datos que pueden tener su origen en una o más entidades de información.
+Son utilizados para mostrar determinada información.
+
+que es un driver jdbc?
+JDBC es una API de la biblioteca estándar.
+Realiza tareas de comunicación con distintas bases de datos.
+Las clases e interfaces se encuentran en el paquete java.sql
+Cada implementación se denomina driver, y es especifica para un motor o versión
+Permite establecer conexiones con las db .
+Permite ejecutar consultas sin usar herramientas administrativas propias.
+
+que linea tengo que escibir si quiero sacar la segunda columna de un resultset sabiendo que es de tipo float?
+rs.getFloat(2)
